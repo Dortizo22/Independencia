@@ -6,7 +6,17 @@ def myfirstview(request):
         'message': 'Hello',
         'name': 'Josue Ortiz'
     }
-    return JsonResponse(data)
+    return JsonResponse({'message': data['message']})
+
+def mysecondview(request):
+    data = {
+        'message': 'Hello',
+        'name': 'Josue Ortiz'
+    }
+    return JsonResponse({'name': data['name']})
+
+def pruebaview(request):
+    return HttpResponse('Pagina Principal de Prueba')
 
 def indexview(request):
     return HttpResponse('Esta es la Página Principal')
