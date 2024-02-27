@@ -19,4 +19,7 @@ def pruebaview(request):
     return HttpResponse('Pagina Principal de Prueba')
 
 def indexview(request):
-    return HttpResponse('Esta es la Página Principal')
+    data = {
+        'name': 'Josue Ortiz'
+    }
+    return render(request, 'index.html', data)
