@@ -26,4 +26,7 @@ def indexview(request):
     }
     return render(request, 'index.html', data)
 
+def indexbootstrap(request):
+    return render(request, 'index_boostrap.html')
+
 
