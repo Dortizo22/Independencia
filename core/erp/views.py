@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
+from core.erp.models import Category, Product
 # Create your views here.
 def myfirstview(request):
     data = {
@@ -20,6 +21,9 @@ def pruebaview(request):
 
 def indexview(request):
     data = {
-        'name': 'Josue Ortiz'
+        'name': 'Josue Ortiz',
+        'categories': Category.objects.all(),
     }
     return render(request, 'index.html', data)
+
+

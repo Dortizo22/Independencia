@@ -1,25 +1,14 @@
 from django.db import models
 from datetime import datetime
+from core.erp.choice import gender_choices
 
 # Create your models here.
-class Tipo(models.Model):
-    nombre = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
+
+class Category(models.Model):
+    name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
 
     def __str__(self):
-        return self.nombre
-
-    class Meta:
-        verbose_name = 'Tipo'
-        verbose_name_plural = 'Tipos'
-        db_table = 'tipo'
-        ordering = ['id']
-
-
-class Categoria(models.Model):
-    nombre = models.CharField(max_length=100, verbose_name='Nombre')
-
-    def __str__(self):
-        return self.nombre
+        return self.name
 
     class Meta:
         verbose_name = 'Categoria'
@@ -27,27 +16,67 @@ class Categoria(models.Model):
         db_table = 'categoria'
         ordering = ['id']
 
-class Empleado(models.Model):
-    categoria = models.ManyToManyField(Categoria)
-    tipo = models.ForeignKey(Tipo, on_delete=models.CASCADE)
-    nombres = models.CharField(max_length=150, verbose_name='nombres')
-    cedula = models.CharField(max_length=10, verbose_name='cedula', unique=True)
-    fecha_registro = models.DateField(default=datetime.now, verbose_name='Fecha de registro')
-    fecha_creacion = models.DateTimeField(auto_now=True)
-    fecha_actualizacion = models.DateTimeField(auto_now_add=True)
-    edad = models.PositiveIntegerField(default=0)
-    salario = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
-    estado = models.BooleanField(default=True)
-    #sexo = models.CharField(max_length=50, verbose_name='sexo')
-    avatar = models.ImageField(upload_to='avatar/%Y/%m/%d', null=True, blank=True)
-    curriculum = models.FileField(upload_to='curriculum/%Y/%m/%d', null=True, blank=True)
+class Product(models.Model):
+    name = models.CharField(max_length=150, verbose_name='Nombre' , unique=True)
+    cate = models.ForeignKey(Category, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='product/%Y/%m/%d', null=True, blank=True)
+    pvp = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
 
     def __str__(self):
-        return self.nombres
+        return self.name
 
     class Meta:
-        verbose_name = 'Empleado'
-        verbose_name_plural = 'Empleados'
-        db_table = 'empleado'
+        verbose_name = 'Producto'
+        verbose_name_plural = 'Productos'
+        db_table = 'producto'
         ordering = ['id']
 
+
+class Client(models.Model):
+    names = models.CharField(max_length=150, verbose_name='Nombres')
+    surnames = models.CharField(max_length=150, verbose_name='Apellido')
+    dni = models.CharField(max_length=10, verbose_name='DNI', unique=True)
+    birthday = models.DateField(verbose_name='Fecha de Nacimiento', default=datetime.now)
+    address = models.CharField(max_length=150, null=True, blank=True, verbose_name='Dirección')
+    sexo = models.CharField(max_length=10, choices=gender_choices, default='male', verbose_name='Sexo')
+
+    def __str__(self):
+        return self.names
+
+    class Meta:
+        verbose_name = 'Cliente'
+        verbose_name_plural = 'Clientes'
+        db_table = 'cliente'
+        ordering = ['id']
+
+class Sale(models.Model):
+    cli = models.ForeignKey(Client, on_delete=models.CASCADE)
+    date_joined = models.DateField(default=datetime.now)
+    subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    iva = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    total = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+
+    def __str__(self):
+        return self.cli.names
+
+    class Meta:
+        verbose_name = 'Venta'
+        verbose_name_plural = 'Ventas'
+        db_table = 'venta'
+        ordering = ['id']
+
+class DateSale(models.Model):
+    sale = models.ForeignKey(Sale, on_delete=models.CASCADE)
+    prod = models.ForeignKey(Product, on_delete=models.CASCADE)
+    price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+    cant = models.IntegerField(default=0)
+    subtotal = models.DecimalField(default=0.00, max_digits=9, decimal_places=2)
+
+    def __str__(self):
+        return self.prod.name
+
+    class Meta:
+        verbose_name = 'Detalle de Venta'
+        verbose_name_plural = 'Detalle de Ventas'
+        db_table = 'detalle_venta'
+        ordering = ['id']

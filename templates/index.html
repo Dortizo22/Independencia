@@ -5,7 +5,19 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Mi Primer Template</h1>
-    <p>{{ name }}</p>
+<h1>Mi Primer Template</h1>
+<p>{{ name }}</p>
+
+<h2>Mis Categorías</h2>
+
+{% block content %}
+    <ul>
+        {% for category in categories %}
+            <li>{{ category.id }} / {{ category.nombre }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
 </body>
 </html>
