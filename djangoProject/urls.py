@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from core.erp.views import indexview, indexbootstrap
+from core.erp.views import indexview, indexbootstrap, index_adminlte
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', indexbootstrap),
+    path('', index_adminlte),
     path('prueba/', include('core.erp.urls')),
 ]
