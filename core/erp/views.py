@@ -30,6 +30,6 @@ def indexbootstrap(request):
     return render(request, 'index_boostrap.html')
 
 def index_adminlte(request):
-    return render(request, 'index_adminlte.html')
+    return render(request, 'home.html')
 
 
